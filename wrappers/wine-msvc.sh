@@ -50,6 +50,11 @@ while [ $# -gt 0 ]; do
 			a=${opt}z:$path
 		fi
 		;;
+	@*.rsp)
+		# Rewrite absolute paths in response files like /absolute/path into z:/absolute/path.
+		filepath=$(realpath "${a:1}")
+		perl -pi -e  's@\s(\/(?:(?:[^\/ ]+)\/+)+(?:[^\/ ]+))@ Z:\1 @g' "$filepath"
+		;;
 	/*)
 		# Rewrite options like /absolute/path into z:/absolute/path.
 		# This is essential for disambiguating e.g. /home/user/file from the
